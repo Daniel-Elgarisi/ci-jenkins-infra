@@ -1,32 +1,70 @@
+properties([
+    parameters([
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select the deployment environment'),
+        string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Docker image tag or application version to deploy'),
+    ])
+])
+
+
 pipeline {
     agent any
 
+    environment {
+        SERVICE_NAME = 'sample-service-node'
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo "Building application"
+                echo "Checking out source code"
+                checkout scm
             }
         }
 
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
-                echo "Running tests"
+                sh '''
+                    echo "Installing dependencies"
+                    npm install || echo "npm install failed, or package.json is missing..."
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    echo "Running tests"
+                    npm test || echo "Test failed or not defined, adjust as needed..."
+                '''
+            }
+        }
+
+        stage('Build artifact') {
+            steps {
+                sh '''
+                    echo "Building application for environment: ${ENVIRONMENT} with IMAGE_TAG: ${IMAGE_TAG}"
+                    npm run build || echo "Build failed or not defined, adjust as needed..."
+                '''
             }
         }
 
         stage('Deploy') {
             steps {
-                echo "Deploying to development environment"
+                sh '''
+                    echo "Starting deploy"
+                    echo "Deploying service '${SERVICE_NAME}' to environment '${ENVIRONMENT}' with tag '${IMAGE_TAG}'"
+                    # Add your deployment commands here, e.g., kubectl, helm, etc.
+                '''
             }
         }
     }
 
     post {
         success {
-            echo "Pipeline completed successfully"
+            echo "Pipeline completed successfully for environment: ${ENVIRONMENT} with tag: ${IMAGE_TAG}"
         }
         failure {
-            echo "Pipeline failed"
+            echo "Pipeline failed for environment: ${ENVIRONMENT} with tag: ${IMAGE_TAG}"
         }
     }
 }
