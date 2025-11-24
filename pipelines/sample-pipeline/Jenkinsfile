@@ -65,6 +65,8 @@ pipeline {
                     echo '>>> Kube context:'
                     kubectl config current-context
 
+                    sed -i 's/<IMAGE_TAG>/${IMAGE_TAG}/g' pipelines/sample-pipeline/k8s/deployment.yaml
+
                     echo '>>> Applying manifests...'
                     kubectl apply -f pipelines/sample-pipeline/k8s -n ${ENVIRONMENT}
 
@@ -79,9 +81,6 @@ pipeline {
                 """
             }
         }
-
-
-
     }
 
     post {
