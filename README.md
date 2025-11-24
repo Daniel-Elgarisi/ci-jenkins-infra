@@ -13,8 +13,8 @@ The deployment flow is executed via Jenkins using a custom Backstage backend act
 
 ## Install
 1. Clone
-git clone https://github.com/Daniel-Elgarisi/devportal-backstage.git
-git clone https://github.com/Daniel-Elgarisi/ci-jenkins-infra.git
+- git clone https://github.com/Daniel-Elgarisi/devportal-backstage.git
+- git clone https://github.com/Daniel-Elgarisi/ci-jenkins-infra.git
 
 2. Start Jenkins
 cd ci-jenkins-infra/jenkins
@@ -27,9 +27,9 @@ Create api token in jenkins
 Configured in devportal-backstage/devportal-backstage/app-config.yaml:
 
 jenkins:
-  baseUrl: "http://localhost:8080"
-  username: here you need to provide your own jenkins username
-  apiKey: here you need to provide your own jenkins apiKey
+- baseUrl: "http://localhost:8080"
+- username: here you need to provide your own jenkins username
+- apiKey: here you need to provide your own jenkins apiKey
 
 3.Run backstage
 cd devportal-backstage/devportal-backstage
@@ -74,9 +74,9 @@ This prevents drift and ensures reproducible CI/CD infrastructure.
 1. Developer selects environment and image tag in Backstage.
 2. Template triggers custom action `custom:jenkins:build`.
 3. The action calls Jenkins REST API:
-    POST /job/pipeline-sample/buildWithParameters
-    ENVIRONMENT=<dev|staging|prod>
-    IMAGE_TAG=<tag>
+- POST /job/pipeline-sample/buildWithParameters
+- ENVIRONMENT=<dev|staging|prod>
+- IMAGE_TAG=<tag>
 4. Jenkins pipeline deploys manifests using parameters.
 5. Deployment is applied to the selected namespace.
 
@@ -113,9 +113,9 @@ therefore a dedicated REST action gives transparent control.
 Configured in app-config.yaml:
 
 jenkins:
-  baseUrl: "http://localhost:8080"
-  username: here you need to provide your own jenkins username
-  apiKey: here you need to provide your own jenkins apiKey
+- baseUrl: "http://localhost:8080"
+- username: here you need to provide your own jenkins username
+- apiKey: here you need to provide your own jenkins apiKey
 
 ## How the Workflow Operates - Stage 2
 Developer opens Create → Register existing component
