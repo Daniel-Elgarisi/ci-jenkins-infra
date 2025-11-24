@@ -130,8 +130,9 @@ Import
 
 View component
 
-click on Jenkins tab
+Reload the page
 
+click on Jenkins tab
 
 ## How the Workflow Operates - Stage 3
 
