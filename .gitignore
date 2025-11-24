@@ -10,3 +10,4 @@ jenkins_home/
 !/jenkins/init.groovy.d/.keep
 
 *.log
+kubeconfig/
