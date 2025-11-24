@@ -11,6 +11,7 @@ pipeline {
 
     environment {
         SERVICE_NAME = 'sample-service-node'
+        KUBECONFIG = '/var/jenkins_home/.kube/config'
     }
 
     stages {
@@ -61,17 +62,26 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                    echo 'Deploying to Kubernetes namespace: ${ENVIRONMENT}'
+                    echo '>>> Deploying to Kubernetes namespace: ${ENVIRONMENT}'
+                    echo '>>> Kube context:'
+                    kubectl config current-context
+
+                    echo '>>> Applying manifests...'
                     kubectl apply -f pipelines/sample-pipeline/k8s -n ${ENVIRONMENT}
 
-                    echo 'Current Pods:'
+                    echo '>>> Waiting for rollout...'
+                    kubectl rollout status deployment/sample-service -n ${ENVIRONMENT}
+
+                    echo '>>> Listing Pods'
                     kubectl get pods -n ${ENVIRONMENT}
 
-                    echo 'Current Services:'
+                    echo '>>> Listing Services'
                     kubectl get svc -n ${ENVIRONMENT}
                 """
             }
         }
+
+
 
     }
 
