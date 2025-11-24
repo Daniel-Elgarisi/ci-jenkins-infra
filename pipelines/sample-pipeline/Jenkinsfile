@@ -54,7 +54,6 @@ pipeline {
                 sh '''
                     echo "Starting deploy"
                     echo "Deploying service '${SERVICE_NAME}' to environment '${ENVIRONMENT}' with tag '${IMAGE_TAG}'"
-                    # Add your deployment commands here, e.g., kubectl, helm, etc.
                 '''
             }
         }
